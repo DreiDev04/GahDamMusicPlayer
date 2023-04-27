@@ -1,4 +1,3 @@
-
 package gahdammusicplayerfinals;
 
 import java.awt.*;
@@ -6,14 +5,15 @@ import javax.swing.*;
 //import net.miginfocom.swing.MigLayout;
 
 public class MusicFrame extends javax.swing.JFrame {
-    
+
     Cards cards;
+    int cardCount = 0;
+
     public MusicFrame() {
         initComponents();
         init();
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -92,7 +92,7 @@ public class MusicFrame extends javax.swing.JFrame {
         scrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPanel.setPreferredSize(new java.awt.Dimension(700, 410));
 
-        mainScrollPane.setBackground(new java.awt.Color(0, 255, 102));
+        mainScrollPane.setBackground(new java.awt.Color(102, 102, 102));
         mainScrollPane.setMinimumSize(new java.awt.Dimension(700, 410));
         mainScrollPane.setPreferredSize(new java.awt.Dimension(700, 410));
         scrollPanel.setViewportView(mainScrollPane);
@@ -134,15 +134,14 @@ public class MusicFrame extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         mainScrollPane.add(new Cards());
-        int x = 50;
-        
-        mainScrollPane.setPreferredSize(new Dimension(mainScrollPane.getPreferredSize().height + x, mainScrollPane.getPreferredSize().width));
-        
-        
-        int y = mainScrollPane.getPreferredSize().height;
-        System.out.println("Pref size: "+ y);
-        
-        
+        cardCount++;
+        System.out.println(cardCount);
+        if (cardCount % 3 == 0) {
+            System.out.println("add height");
+            Dimension currentPreferredSize = mainScrollPane.getPreferredSize();
+            mainScrollPane.setPreferredSize(new Dimension(currentPreferredSize.width, currentPreferredSize.height + 236));
+            mainScrollPane.revalidate();
+        }
         scrollPanel.revalidate();
         scrollPanel.repaint();
     }//GEN-LAST:event_jButton1MouseClicked
@@ -196,11 +195,8 @@ public class MusicFrame extends javax.swing.JFrame {
 //        scrollPanel.setViewportBorder(null);
         scrollPanel.setBorder(null);
         scrollPanel.getVerticalScrollBar().setUnitIncrement(10);
-        
-//        mainScrollPane.setLayout(new MigLayout("fill, wrap"));
-        
-    }
-    
-    
-}
 
+//        mainScrollPane.setLayout(new MigLayout("fill, wrap"));
+    }
+
+}
