@@ -25,6 +25,7 @@ public class MusicFrame extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         scrollPanel = new javax.swing.JScrollPane();
         mainScrollPane = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         navBarPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -92,9 +93,23 @@ public class MusicFrame extends javax.swing.JFrame {
         scrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPanel.setPreferredSize(new java.awt.Dimension(700, 410));
 
-        mainScrollPane.setBackground(new java.awt.Color(153, 255, 153));
+        mainScrollPane.setBackground(new java.awt.Color(255, 102, 102));
         mainScrollPane.setMinimumSize(new java.awt.Dimension(700, 410));
         mainScrollPane.setPreferredSize(new java.awt.Dimension(700, 410));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        mainScrollPane.add(jPanel1);
+
         scrollPanel.setViewportView(mainScrollPane);
 
         mainPanel.add(scrollPanel, java.awt.BorderLayout.CENTER);
@@ -184,6 +199,7 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JPanel footerPanel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel mainScrollPane;
     private javax.swing.JPanel navBarPanel;
