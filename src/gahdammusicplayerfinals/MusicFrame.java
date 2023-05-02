@@ -15,7 +15,7 @@ import javafx.application.Platform;
 public class MusicFrame extends javax.swing.JFrame {
 
     MusicJAVA_FX musicJAVA_FX;
-    SwingJavaFXMusicPlayer swingJavaFXMusicPlayer;
+    
     
     private MediaPlayer mediaPlayer;
     private final JFXPanel fxPanel;
@@ -520,15 +520,15 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_searchTextFieldFocusLost
 
     private void playButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playButtonMouseClicked
-        
+        playMusic();
     }//GEN-LAST:event_playButtonMouseClicked
 
     private void pauseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pauseButtonMouseClicked
-        // TODO add your handling code here:
+        pauseMusic();
     }//GEN-LAST:event_pauseButtonMouseClicked
 
     private void stopButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stopButton1KeyPressed
-        // TODO add your handling code here:
+        stopMusic();
     }//GEN-LAST:event_stopButton1KeyPressed
 
     public static void main(String args[]) {
@@ -597,12 +597,7 @@ public class MusicFrame extends javax.swing.JFrame {
 
     private void init() {
 
-        JViewport viewport = libraryscrollPanel.getViewport();
-        viewport.setBackground(new Color(0x1F1F1F));
         libraryscrollPanel.setBorder(null);
-
-        JViewport viewport1 = libraryscrollPanel1.getViewport();
-        viewport.setBackground(new Color(0x1F1F1F));
         libraryscrollPanel1.setBorder(null);
 
         libraryscrollPanel.getVerticalScrollBar().setUnitIncrement(10);
@@ -610,17 +605,7 @@ public class MusicFrame extends javax.swing.JFrame {
     }
 
     private void musicInit() {
-        
-        playButton.addActionListener(e -> play());
-
-       
-        pauseButton.addActionListener(e -> pause());
-
-        
-        stopButton1.addActionListener(e -> stop());
-
-        volumeSlider.addChangeListener(e -> setVolume(volumeSlider.getValue() / 100.0));
-
+        volumeSlider.addChangeListener(e -> setVolumeMusic(volumeSlider.getValue() / 100.0));
     }
     private void initFX(JFXPanel fxPanel) {
         // This method initializes the JavaFX environment, and must be called before using any JavaFX components
@@ -631,10 +616,10 @@ public class MusicFrame extends javax.swing.JFrame {
         // This method creates the JavaFX MediaPlayer component, and sets up the media file to be played
         Media media = new Media(new File("C:\\Users\\tacuj\\Documents\\NetBeansProjects\\GahDamMusicPlayerFinals\\src\\musicFolder\\Taylor Swift - 22.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setOnEndOfMedia(() -> stop()); // Stop playing when the media ends
+        mediaPlayer.setOnEndOfMedia(() -> stopMusic()); // Stop playing when the media ends
     }
     
-    public void play() {
+    private void playMusic() {
         // This method starts playing the media file using the JavaFX MediaPlayer
         if (mediaPlayer.getStatus() == Status.PAUSED) {
             mediaPlayer.play();
@@ -645,18 +630,18 @@ public class MusicFrame extends javax.swing.JFrame {
         }
     }
 
-    public void pause() {
+    private void pauseMusic() {
         // This method pauses the media file using the JavaFX MediaPlayer
         mediaPlayer.pause();
     }
 
-    public void stop() {
+    private void stopMusic() {
         // This method stops the media file using the JavaFX MediaPlayer
         mediaPlayer.stop();
         mediaPlayer.seek(Duration.ZERO);
     }
 
-    public void setVolume(double volume) {
+    private void setVolumeMusic(double volume) {
         // This method sets the volume of the media file using the JavaFX MediaPlayer
         mediaPlayer.setVolume(volume);
     }
