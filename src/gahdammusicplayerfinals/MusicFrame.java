@@ -58,11 +58,12 @@ public class MusicFrame extends javax.swing.JFrame {
         resizeButton = new javax.swing.JLabel();
         minimizeButton = new javax.swing.JLabel();
         footerPanel = new javax.swing.JPanel();
-        addCard = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
-        pauseButton = new javax.swing.JButton();
         stopButton1 = new javax.swing.JButton();
         volumeSlider = new javax.swing.JSlider();
+        prevButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
+        repeatButton = new javax.swing.JButton();
         asidePanel = new javax.swing.JPanel();
         logoContainer = new javax.swing.JPanel();
         gahDamMusicLaebl = new javax.swing.JLabel();
@@ -74,6 +75,7 @@ public class MusicFrame extends javax.swing.JFrame {
         yourLibraryPanel = new javax.swing.JPanel();
         navBarPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        addCard = new javax.swing.JButton();
         libraryscrollPanel = new javax.swing.JScrollPane();
         stopButton = new javax.swing.JPanel();
         searchPanel = new javax.swing.JPanel();
@@ -159,24 +161,10 @@ public class MusicFrame extends javax.swing.JFrame {
         footerPanel.setBackground(new java.awt.Color(31, 31, 31));
         footerPanel.setPreferredSize(new java.awt.Dimension(900, 60));
 
-        addCard.setText("Add Cards");
-        addCard.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addCardMouseClicked(evt);
-            }
-        });
-
         playButton.setText("Play");
         playButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 playButtonMouseClicked(evt);
-            }
-        });
-
-        pauseButton.setText("Pause");
-        pauseButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                pauseButtonMouseClicked(evt);
             }
         });
 
@@ -187,6 +175,17 @@ public class MusicFrame extends javax.swing.JFrame {
             }
         });
 
+        prevButton.setText("Prev");
+
+        nextButton.setText("Next");
+
+        repeatButton.setText("Repeat");
+        repeatButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                repeatButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout footerPanelLayout = new javax.swing.GroupLayout(footerPanel);
         footerPanel.setLayout(footerPanelLayout);
         footerPanelLayout.setHorizontalGroup(
@@ -194,30 +193,30 @@ public class MusicFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(playButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pauseButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(78, 78, 78)
                 .addComponent(stopButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(prevButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nextButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(repeatButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
                 .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 381, Short.MAX_VALUE)
-                .addComponent(addCard)
-                .addContainerGap())
+                .addGap(26, 26, 26))
         );
         footerPanelLayout.setVerticalGroup(
             footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(footerPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addCard)
-                .addContainerGap(22, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(playButton)
-                        .addComponent(pauseButton)
-                        .addComponent(stopButton1)))
+                        .addComponent(stopButton1)
+                        .addComponent(prevButton)
+                        .addComponent(nextButton)
+                        .addComponent(repeatButton)))
                 .addContainerGap())
         );
 
@@ -340,6 +339,15 @@ public class MusicFrame extends javax.swing.JFrame {
         jLabel2.setText("Your Library");
         navBarPanel.add(jLabel2);
         jLabel2.setBounds(30, 20, 148, 25);
+
+        addCard.setText("Add Cards");
+        addCard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addCardMouseClicked(evt);
+            }
+        });
+        navBarPanel.add(addCard);
+        addCard.setBounds(540, 0, 89, 32);
 
         yourLibraryPanel.add(navBarPanel, java.awt.BorderLayout.NORTH);
 
@@ -501,7 +509,7 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_searchLabelMouseClicked
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
@@ -523,13 +531,13 @@ public class MusicFrame extends javax.swing.JFrame {
         playMusic();
     }//GEN-LAST:event_playButtonMouseClicked
 
-    private void pauseButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pauseButtonMouseClicked
-        pauseMusic();
-    }//GEN-LAST:event_pauseButtonMouseClicked
-
     private void stopButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stopButton1KeyPressed
         stopMusic();
     }//GEN-LAST:event_stopButton1KeyPressed
+
+    private void repeatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repeatButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_repeatButtonActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -579,9 +587,11 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JPanel mainScrollPane2;
     private javax.swing.JLabel minimizeButton;
     private javax.swing.JPanel navBarPanel;
+    private javax.swing.JButton nextButton;
     private javax.swing.JPanel northPanel;
-    private javax.swing.JButton pauseButton;
     private javax.swing.JButton playButton;
+    private javax.swing.JButton prevButton;
+    private javax.swing.JButton repeatButton;
     private javax.swing.JLabel resizeButton;
     private javax.swing.JLabel searchLabel;
     private javax.swing.JPanel searchNav;
@@ -620,7 +630,6 @@ public class MusicFrame extends javax.swing.JFrame {
     }
     
     private void playMusic() {
-        // This method starts playing the media file using the JavaFX MediaPlayer
         if (mediaPlayer.getStatus() == Status.PAUSED) {
             mediaPlayer.play();
         } else {
@@ -631,18 +640,15 @@ public class MusicFrame extends javax.swing.JFrame {
     }
 
     private void pauseMusic() {
-        // This method pauses the media file using the JavaFX MediaPlayer
         mediaPlayer.pause();
     }
 
     private void stopMusic() {
-        // This method stops the media file using the JavaFX MediaPlayer
         mediaPlayer.stop();
         mediaPlayer.seek(Duration.ZERO);
     }
 
     private void setVolumeMusic(double volume) {
-        // This method sets the volume of the media file using the JavaFX MediaPlayer
         mediaPlayer.setVolume(volume);
     }
 }
