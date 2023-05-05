@@ -15,7 +15,7 @@ import javafx.application.Platform;
 public class MusicFrame extends javax.swing.JFrame {
 
     MusicJAVA_FX musicJAVA_FX;
-    FileSelector fileSelector;
+    static FileSelector fileSelector = new FileSelector();
     
     private MediaPlayer mediaPlayer;
     private final JFXPanel fxPanel;
@@ -36,7 +36,7 @@ public class MusicFrame extends javax.swing.JFrame {
 
     public MusicFrame() {
         
-        
+        fileSelector.showFile();
         
         initComponents();
         init();
@@ -576,10 +576,12 @@ public class MusicFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MusicFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
+                
                 new MusicFrame().setVisible(true);
             }
         });
@@ -622,7 +624,7 @@ public class MusicFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void init() {
-
+        
         libraryscrollPanel.setBorder(null);
         libraryscrollPanel1.setBorder(null);
 

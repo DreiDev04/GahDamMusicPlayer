@@ -23,4 +23,9 @@ public class FileSelector {
         }
         
     }
+    public void showFile(){
+        for (String element : fileNames) {
+            System.out.println(element);
+        }
+    }
 }
