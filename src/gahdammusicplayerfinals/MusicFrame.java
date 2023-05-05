@@ -15,7 +15,7 @@ import javafx.application.Platform;
 public class MusicFrame extends javax.swing.JFrame {
 
     MusicJAVA_FX musicJAVA_FX;
-    
+    FileSelector fileSelector;
     
     private MediaPlayer mediaPlayer;
     private final JFXPanel fxPanel;
@@ -35,7 +35,9 @@ public class MusicFrame extends javax.swing.JFrame {
     private boolean isFullScreen;
 
     public MusicFrame() {
-
+        
+        
+        
         initComponents();
         init();
         
@@ -64,10 +66,12 @@ public class MusicFrame extends javax.swing.JFrame {
         prevButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         repeatButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         asidePanel = new javax.swing.JPanel();
         logoContainer = new javax.swing.JPanel();
         gahDamMusicLaebl = new javax.swing.JLabel();
-        logoCont = new javax.swing.JPanel();
+        logoContainer1 = new javax.swing.JPanel();
         welcomeLogo = new javax.swing.JLabel();
         searchLabel = new javax.swing.JLabel();
         libraryLabel = new javax.swing.JLabel();
@@ -186,6 +190,10 @@ public class MusicFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("00:00");
+
+        jLabel3.setText("00:00");
+
         javax.swing.GroupLayout footerPanelLayout = new javax.swing.GroupLayout(footerPanel);
         footerPanel.setLayout(footerPanelLayout);
         footerPanelLayout.setHorizontalGroup(
@@ -201,7 +209,11 @@ public class MusicFrame extends javax.swing.JFrame {
                 .addComponent(nextButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(repeatButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
+                .addGap(58, 58, 58)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(57, 57, 57)
                 .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
@@ -216,7 +228,9 @@ public class MusicFrame extends javax.swing.JFrame {
                         .addComponent(stopButton1)
                         .addComponent(prevButton)
                         .addComponent(nextButton)
-                        .addComponent(repeatButton)))
+                        .addComponent(repeatButton)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel3)))
                 .addContainerGap())
         );
 
@@ -246,16 +260,16 @@ public class MusicFrame extends javax.swing.JFrame {
         gahDamMusicLaebl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         gahDamMusicLaebl.setText("GahDamMusic");
 
-        logoCont.setPreferredSize(new java.awt.Dimension(25, 25));
+        logoContainer1.setPreferredSize(new java.awt.Dimension(25, 25));
 
-        javax.swing.GroupLayout logoContLayout = new javax.swing.GroupLayout(logoCont);
-        logoCont.setLayout(logoContLayout);
-        logoContLayout.setHorizontalGroup(
-            logoContLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout logoContainer1Layout = new javax.swing.GroupLayout(logoContainer1);
+        logoContainer1.setLayout(logoContainer1Layout);
+        logoContainer1Layout.setHorizontalGroup(
+            logoContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 25, Short.MAX_VALUE)
         );
-        logoContLayout.setVerticalGroup(
-            logoContLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        logoContainer1Layout.setVerticalGroup(
+            logoContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 25, Short.MAX_VALUE)
         );
 
@@ -288,7 +302,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 .addGroup(asidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(asidePanelLayout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addComponent(logoCont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(logoContainer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(welcomeLogo))
                     .addGroup(asidePanelLayout.createSequentialGroup()
@@ -317,7 +331,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 .addComponent(searchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 278, Short.MAX_VALUE)
                 .addGroup(asidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(logoCont, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logoContainer1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(welcomeLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -577,12 +591,14 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JPanel footerPanel;
     private javax.swing.JLabel gahDamMusicLaebl;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel libraryLabel;
     private javax.swing.JScrollPane libraryscrollPanel;
     private javax.swing.JScrollPane libraryscrollPanel1;
-    private javax.swing.JPanel logoCont;
     private javax.swing.JPanel logoContainer;
+    private javax.swing.JPanel logoContainer1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel mainScrollPane2;
     private javax.swing.JLabel minimizeButton;
