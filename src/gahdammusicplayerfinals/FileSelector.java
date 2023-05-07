@@ -18,37 +18,26 @@ public class FileSelector {
     //Convert the file list to an array of file index
     int[] fileIndex = new int[files.length];
 
+    List<String[]> musicList = new ArrayList<>();
+
     public FileSelector() {
         //Set the file list
-        for (int i = 0; i < files.length; i++){
-            fileNames[i] = "["+ i +"]" + " " + files[i].getName();
+        for (int i = 0; i < files.length; i++) {
+            fileNames[i] = "[" + i + "]" + " " + files[i].getName();
             fileIndex[i] = i;
+
         }
-
-//        for (File file : files) {
-//            String musicFilePath = file.getAbsolutePath();
-//            Media media = new Media(new File(musicFilePath).toURI().toString());
-//
-//            String musicName = (String) media.getMetadata().get("title");
-//            String artistName = (String) media.getMetadata().get("artist");
-//
-//            // Add the music name and artist to the list
-//            musicList.add(new String[]{musicName, artistName});
-//        }
-//
-//        // Print the list of music names and artists
-//        for (String[] music : musicList) {
-//            System.out.println("Music Name: " + music[0]);
-//            System.out.println("Artist Name: " + music[1]);
-//        }
     }
-
-    List<String[]> musicList = new ArrayList<>();
 
     // Iterate over each music file and extract its name and artist
     public void showFile() {
         for (String element : fileNames) {
-            System.out.println(element);
+//            System.out.println(element);
+
+        }
+        for (String[] music : musicList) {
+            System.out.println("Music Name: " + music[0]);
+            System.out.println("Artist Name: " + music[1]);
         }
     }
 }

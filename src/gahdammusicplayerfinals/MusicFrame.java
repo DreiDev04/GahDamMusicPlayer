@@ -1,6 +1,8 @@
 package gahdammusicplayerfinals;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 
 import javafx.embed.swing.JFXPanel;
@@ -14,16 +16,15 @@ import javafx.application.Platform;
 
 public class MusicFrame extends javax.swing.JFrame {
 
-    MusicJAVA_FX musicJAVA_FX;
-    static FileSelector fileSelector = new FileSelector();
-    
+    ExtractInfo extractInfo = new ExtractInfo();
+
     private MediaPlayer mediaPlayer;
     private final JFXPanel fxPanel;
-    
 
     CardLayout cardLayout;
     Cards cards;
     int cardCount = 0;
+    String currentMusic;
 
     //mouse nav listener
     private int dragStartX;
@@ -35,18 +36,17 @@ public class MusicFrame extends javax.swing.JFrame {
     private boolean isFullScreen;
 
     public MusicFrame() {
-        
-        fileSelector.showFile();
-        
+
         initComponents();
         init();
-        
+
         fxPanel = new JFXPanel();
         footerPanel.add(fxPanel);
         Platform.runLater(() -> {
             initFX(fxPanel);
             createMediaPlayer();
         });
+        addCards();
         musicInit();
     }
 
@@ -81,7 +81,7 @@ public class MusicFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         addCard = new javax.swing.JButton();
         libraryscrollPanel = new javax.swing.JScrollPane();
-        stopButton = new javax.swing.JPanel();
+        libraryPanel = new javax.swing.JPanel();
         searchPanel = new javax.swing.JPanel();
         searchNav = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
@@ -371,10 +371,10 @@ public class MusicFrame extends javax.swing.JFrame {
         libraryscrollPanel.setToolTipText("");
         libraryscrollPanel.setPreferredSize(new java.awt.Dimension(700, 410));
 
-        stopButton.setBackground(new java.awt.Color(32, 32, 32));
-        stopButton.setMinimumSize(new java.awt.Dimension(700, 410));
-        stopButton.setPreferredSize(new java.awt.Dimension(700, 410));
-        libraryscrollPanel.setViewportView(stopButton);
+        libraryPanel.setBackground(new java.awt.Color(32, 32, 32));
+        libraryPanel.setMinimumSize(new java.awt.Dimension(700, 410));
+        libraryPanel.setPreferredSize(new java.awt.Dimension(700, 410));
+        libraryscrollPanel.setViewportView(libraryPanel);
 
         yourLibraryPanel.add(libraryscrollPanel, java.awt.BorderLayout.CENTER);
 
@@ -444,17 +444,7 @@ public class MusicFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addCardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addCardMouseClicked
-        stopButton.add(new Cards());
-        cardCount++;
-        System.out.println(cardCount);
-        if (cardCount % 4 == 0) {
-            System.out.println("add height");
-            Dimension currentPreferredSize = stopButton.getPreferredSize();
-            stopButton.setPreferredSize(new Dimension(currentPreferredSize.width, currentPreferredSize.height + 191));
-            stopButton.revalidate();
-        }
-        libraryscrollPanel.revalidate();
-        libraryscrollPanel.repaint();
+
     }//GEN-LAST:event_addCardMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -523,7 +513,7 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_searchLabelMouseClicked
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        
+
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
@@ -576,12 +566,11 @@ public class MusicFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MusicFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
-                
+
                 new MusicFrame().setVisible(true);
             }
         });
@@ -597,6 +586,7 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel libraryLabel;
+    private javax.swing.JPanel libraryPanel;
     private javax.swing.JScrollPane libraryscrollPanel;
     private javax.swing.JScrollPane libraryscrollPanel1;
     private javax.swing.JPanel logoContainer;
@@ -615,7 +605,6 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JPanel searchNav;
     private javax.swing.JPanel searchPanel;
     private javax.swing.JTextField searchTextField;
-    private javax.swing.JPanel stopButton;
     private javax.swing.JButton stopButton1;
     private javax.swing.JSlider volumeSlider;
     private javax.swing.JLabel welcomeLogo;
@@ -624,17 +613,71 @@ public class MusicFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void init() {
-        
+
         libraryscrollPanel.setBorder(null);
         libraryscrollPanel1.setBorder(null);
-
         libraryscrollPanel.getVerticalScrollBar().setUnitIncrement(10);
 
+    }
+
+    private void addCards() {
+
+        for (int i = 0; i < extractInfo.fileCount; i++) {
+            final int currentX = i;
+            Cards cards = new Cards();
+            //html tag for autowrap
+            cards.artistName.setText("<html>" + extractInfo.artistName[i] + "</html>");
+            cards.songName.setText("<html>" + extractInfo.musicName[i] + "</html>");
+            currentMusic = extractInfo.artistName[i] + " - " + extractInfo.musicName[i];
+            cards.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+//                    currentMusic = extractInfo.artistName[currentX] + " - " + extractInfo.musicName[currentX];
+                    currentMusic = "Taylor Swift - 22.mp3";
+//                    playMusic();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
+
+            libraryPanel.add(cards);
+
+            cardCount++;
+            if (cardCount % 4 == 0) {
+                Dimension currentPreferredSize = libraryPanel.getPreferredSize();
+                libraryPanel.setPreferredSize(new Dimension(currentPreferredSize.width, currentPreferredSize.height + 200));
+                libraryPanel.revalidate();
+            }
+
+        }
+
+        libraryscrollPanel.revalidate();
+
+        libraryscrollPanel.repaint();
     }
 
     private void musicInit() {
         volumeSlider.addChangeListener(e -> setVolumeMusic(volumeSlider.getValue() / 100.0));
     }
+
     private void initFX(JFXPanel fxPanel) {
         // This method initializes the JavaFX environment, and must be called before using any JavaFX components
         new JFXPanel(); // This line is required to ensure the JavaFX toolkit is initialized on the current thread
@@ -642,11 +685,12 @@ public class MusicFrame extends javax.swing.JFrame {
 
     private void createMediaPlayer() {
         // This method creates the JavaFX MediaPlayer component, and sets up the media file to be played
-        Media media = new Media(new File("C:\\Users\\tacuj\\Documents\\NetBeansProjects\\GahDamMusicPlayerFinals\\src\\musicFolder\\Taylor Swift - 22.mp3").toURI().toString());
+        Media media = new Media(new File("C:\\Users\\tacuj\\Documents\\NetBeansProjects\\GahDamMusicPlayerFinals\\src\\musicFolder\\" + currentMusic).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(() -> stopMusic()); // Stop playing when the media ends
     }
-    
+
+
     private void playMusic() {
         if (mediaPlayer.getStatus() == Status.PAUSED) {
             mediaPlayer.play();
@@ -669,4 +713,9 @@ public class MusicFrame extends javax.swing.JFrame {
     private void setVolumeMusic(double volume) {
         mediaPlayer.setVolume(volume);
     }
+
+    private void setPath() {
+
+    }
+
 }
