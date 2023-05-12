@@ -6,12 +6,13 @@ import java.io.File;
 
 public class ExtractInfo {
     
-
-    static String directoryPath = "C:\\Users\\tacuj\\Documents\\NetBeansProjects\\GahDamMusicPlayerFinals\\src\\musicFolder";
+    static String directoryPath = "C:\\Users\\tacuj\\Documents\\NetBeansProjects\\GahDamMusicPlayerFinals\\src\\musicFolder\\";
+    
+//    static String directoryPath = ;
     //Set File Directory
     static File directory = new File(directoryPath);
     //Get the list of files in the directory
-    static File[] files = directory.listFiles();
+    public static File[] files = directory.listFiles();
     //Convert the file list to an array of file names
     static String[] fileNames = new String[files.length];
     
@@ -36,8 +37,10 @@ public class ExtractInfo {
     public static void main(String[] args) {
         new ExtractInfo();
         
-        for (String string : musicName) {
-            System.out.println(string);
-        }
+//        for (String string : musicName) {
+//            System.out.println(string);
+//        }
+        
+        
     }
 }
