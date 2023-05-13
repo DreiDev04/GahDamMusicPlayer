@@ -1,6 +1,7 @@
 package gahdammusicplayerfinals;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
@@ -36,6 +37,8 @@ public class MusicFrame extends javax.swing.JFrame {
     //for time stamp
     DecimalFormat decimalFormat = new DecimalFormat("00");
     private Timer timer;
+    private MouseEvent evt;
+    private boolean userInteraction = false;
 
     //mouse nav listener
     private int dragStartX;
@@ -59,6 +62,7 @@ public class MusicFrame extends javax.swing.JFrame {
         });
 
         addCards();
+
         musicInit();
     }
 
@@ -74,17 +78,22 @@ public class MusicFrame extends javax.swing.JFrame {
         settingCombo = new javax.swing.JComboBox<>();
         footerPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        repeatButton = new javax.swing.JButton();
-        stopButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        songNameLabel = new javax.swing.JLabel();
+        artistNameLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         currentTime = new javax.swing.JLabel();
+        stopButton1 = new javax.swing.JButton();
         prevButton = new javax.swing.JButton();
         playButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
+        repeatToggleButton = new javax.swing.JToggleButton();
         endTime = new javax.swing.JLabel();
         musicJslider = new javax.swing.JSlider();
         jPanel2 = new javax.swing.JPanel();
         volumeSlider = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
         asidePanel = new javax.swing.JPanel();
         logoContainer = new javax.swing.JPanel();
         gahDamMusicLaebl = new javax.swing.JLabel();
@@ -161,7 +170,7 @@ public class MusicFrame extends javax.swing.JFrame {
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, northPanelLayout.createSequentialGroup()
                 .addComponent(settingCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 753, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
                 .addComponent(minimizeButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resizeButton)
@@ -191,15 +200,60 @@ public class MusicFrame extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(31, 31, 31));
         jPanel3.setPreferredSize(new java.awt.Dimension(250, 60));
 
-        repeatButton.setText("Repeat");
-        repeatButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                repeatButtonActionPerformed(evt);
-            }
-        });
-        jPanel3.add(repeatButton);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/music icon1.jpg"))); // NOI18N
+        jLabel3.setPreferredSize(new java.awt.Dimension(50, 50));
+        jPanel3.add(jLabel3);
 
-        stopButton1.setText("Stop");
+        jPanel4.setBackground(new java.awt.Color(31, 31, 31));
+        jPanel4.setPreferredSize(new java.awt.Dimension(160, 50));
+
+        songNameLabel.setBackground(new java.awt.Color(49, 49, 49));
+        songNameLabel.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
+        songNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        songNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        songNameLabel.setText("<Song Name>");
+
+        artistNameLabel.setFont(new java.awt.Font("Dialog", 1, 8)); // NOI18N
+        artistNameLabel.setForeground(new java.awt.Color(255, 255, 255));
+        artistNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        artistNameLabel.setText("<Artis Name>");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+            .addComponent(artistNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(artistNameLabel))
+        );
+
+        jPanel3.add(jPanel4);
+
+        footerPanel.add(jPanel3);
+
+        jPanel1.setBackground(new java.awt.Color(31, 31, 31));
+        jPanel1.setPreferredSize(new java.awt.Dimension(300, 60));
+        jPanel1.setRequestFocusEnabled(false);
+
+        currentTime.setBackground(new java.awt.Color(255, 255, 255));
+        currentTime.setForeground(new java.awt.Color(255, 255, 255));
+        currentTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        currentTime.setText("00:00");
+        jPanel1.add(currentTime);
+
+        stopButton1.setBackground(new java.awt.Color(31, 31, 31));
+        stopButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/stop-button.png"))); // NOI18N
+        stopButton1.setBorder(null);
+        stopButton1.setFocusPainted(false);
+        stopButton1.setFocusable(false);
+        stopButton1.setOpaque(false);
+        stopButton1.setPreferredSize(new java.awt.Dimension(28, 28));
         stopButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 stopButton1MouseClicked(evt);
@@ -210,18 +264,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 stopButton1KeyPressed(evt);
             }
         });
-        jPanel3.add(stopButton1);
-
-        footerPanel.add(jPanel3);
-
-        jPanel1.setBackground(new java.awt.Color(31, 31, 31));
-        jPanel1.setPreferredSize(new java.awt.Dimension(300, 60));
-
-        currentTime.setBackground(new java.awt.Color(255, 255, 255));
-        currentTime.setForeground(new java.awt.Color(255, 255, 255));
-        currentTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        currentTime.setText("00:00");
-        jPanel1.add(currentTime);
+        jPanel1.add(stopButton1);
 
         prevButton.setBackground(new java.awt.Color(31, 31, 31));
         prevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-chevron.png"))); // NOI18N
@@ -264,6 +307,16 @@ public class MusicFrame extends javax.swing.JFrame {
         });
         jPanel1.add(nextButton);
 
+        repeatToggleButton.setBackground(new java.awt.Color(31, 31, 31));
+        repeatToggleButton.setForeground(new java.awt.Color(204, 204, 255));
+        repeatToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/repeat (3).png"))); // NOI18N
+        repeatToggleButton.setToolTipText("");
+        repeatToggleButton.setFocusable(false);
+        repeatToggleButton.setOpaque(false);
+        repeatToggleButton.setPreferredSize(new java.awt.Dimension(28, 28));
+        repeatToggleButton.setRequestFocusEnabled(false);
+        jPanel1.add(repeatToggleButton);
+
         endTime.setBackground(new java.awt.Color(255, 255, 255));
         endTime.setForeground(new java.awt.Color(255, 255, 255));
         endTime.setText("00:00");
@@ -284,21 +337,28 @@ public class MusicFrame extends javax.swing.JFrame {
 
         volumeSlider.setOpaque(false);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/volume-up.png"))); // NOI18N
+        jLabel1.setPreferredSize(new java.awt.Dimension(24, 24));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(94, Short.MAX_VALUE)
-                .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(147, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(volumeSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         footerPanel.add(jPanel2);
@@ -398,7 +458,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 .addComponent(libraryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 294, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 304, Short.MAX_VALUE)
                 .addGroup(asidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(logoContainer1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(welcomeLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -496,7 +556,7 @@ public class MusicFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
+            .addComponent(backgroundPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
         );
 
         pack();
@@ -587,14 +647,6 @@ public class MusicFrame extends javax.swing.JFrame {
         playMusic();
     }//GEN-LAST:event_playButtonMouseClicked
 
-    private void stopButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stopButton1KeyPressed
-        stopMusic();
-    }//GEN-LAST:event_stopButton1KeyPressed
-
-    private void repeatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repeatButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_repeatButtonActionPerformed
-
     private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
         musicJslider.setValue(0);
         currentMusic.setLength(0);
@@ -613,11 +665,24 @@ public class MusicFrame extends javax.swing.JFrame {
             String formattedDuration = decimalFormat.format(minutes) + ":" + decimalFormat.format(seconds);
             endTime.setText(formattedDuration);
 
+            setupSlider(duration);
+            startTimer();
+
         });
+
         setVolumeMusic(50);
         volumeSlider.setValue(50);
 
         playMusic();
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            if (repeatToggleButton.isSelected()) {
+                System.out.println("Toggle Button Enabled");
+                mediaPlayer.seek(Duration.ZERO);
+            } else {
+                nextButtonMouseClicked(evt);
+            }
+        });
         musicIndex++;
 
     }//GEN-LAST:event_nextButtonMouseClicked
@@ -640,14 +705,29 @@ public class MusicFrame extends javax.swing.JFrame {
             String formattedDuration = decimalFormat.format(minutes) + ":" + decimalFormat.format(seconds);
             endTime.setText(formattedDuration);
 
+            setupSlider(duration);
+            startTimer();
         });
+
         setVolumeMusic(50);
         volumeSlider.setValue(50);
         musicJslider.setValue(0);
 
         playMusic();
+        mediaPlayer.setOnEndOfMedia(() -> {
+            if (repeatToggleButton.isSelected()) {
+                System.out.println("Toggle Button Enabled");
+                mediaPlayer.seek(Duration.ZERO);
+            } else {
+                nextButtonMouseClicked(evt);
+            }
+        });
         musicIndex--;
     }//GEN-LAST:event_prevButtonMouseClicked
+
+    private void stopButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stopButton1KeyPressed
+        stopMusic();
+    }//GEN-LAST:event_stopButton1KeyPressed
 
     private void stopButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopButton1MouseClicked
         stopMusic();
@@ -687,16 +767,20 @@ public class MusicFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel artistNameLabel;
     private javax.swing.JPanel asidePanel;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JLabel currentTime;
     private javax.swing.JLabel endTime;
     private javax.swing.JPanel footerPanel;
     private javax.swing.JLabel gahDamMusicLaebl;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel libraryLabel;
     private javax.swing.JPanel libraryPanel;
     private javax.swing.JScrollPane libraryscrollPanel;
@@ -712,13 +796,14 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JPanel northPanel;
     private javax.swing.JButton playButton;
     private javax.swing.JButton prevButton;
-    private javax.swing.JButton repeatButton;
+    private javax.swing.JToggleButton repeatToggleButton;
     private javax.swing.JLabel resizeButton;
     private javax.swing.JLabel searchLabel;
     private javax.swing.JPanel searchNav;
     private javax.swing.JPanel searchPanel;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> settingCombo;
+    private javax.swing.JLabel songNameLabel;
     private javax.swing.JButton stopButton1;
     private javax.swing.JSlider volumeSlider;
     private javax.swing.JLabel welcomeLogo;
@@ -743,13 +828,14 @@ public class MusicFrame extends javax.swing.JFrame {
             cards.artistName.setText("<html>" + extractInfo.artistName[i] + "</html>");
             cards.songName.setText("<html>" + extractInfo.musicName[i] + "</html>");
 
-//            String cardsMusic = extractInfo.files[i].getName();
             musicArray.add(extractInfo.files[i].getName());
 
             cards.musicArtwork.addMouseListener(new MouseListener() {
+
                 @Override
                 public void mouseClicked(MouseEvent me) {
-//                    musicJslider.setValue(0);
+                    artistNameLabel.setText("<html>" + extractInfo.artistName[index] + "</html>");
+                    songNameLabel.setText("<html>" + extractInfo.musicName[index] + "</html>");
                     musicIndex = index;
                     currentMusic.setLength(0);
                     currentMusic.append(musicArray.get(index));
@@ -757,10 +843,7 @@ public class MusicFrame extends javax.swing.JFrame {
                     if (mediaPlayer != null) {
                         mediaPlayer.stop();
                     }
-                    
                     createMediaPlayer();
-
-//                    endTime.setText(mediaPlayer.getTotalDuration().toString());
                     mediaPlayer.setOnReady(() -> {
                         Duration duration = mediaPlayer.getTotalDuration();
                         long totalSeconds = (long) duration.toSeconds();
@@ -769,7 +852,6 @@ public class MusicFrame extends javax.swing.JFrame {
                         DecimalFormat decimalFormat = new DecimalFormat("00");
                         String formattedDuration = decimalFormat.format(minutes) + ":" + decimalFormat.format(seconds);
                         endTime.setText(formattedDuration);
-
                         setupSlider(duration);
                         startTimer();
                     });
@@ -778,6 +860,14 @@ public class MusicFrame extends javax.swing.JFrame {
                     volumeSlider.setValue(50);
                     playMusic();
 
+                    mediaPlayer.setOnEndOfMedia(() -> {
+                        if (repeatToggleButton.isSelected()) {
+                            System.out.println("Toggle Button Enabled");
+                            mediaPlayer.seek(Duration.ZERO);
+                        } else {
+                            nextButtonMouseClicked(evt);
+                        }
+                    });
                     System.out.println("Playing: " + musicArray.get(index));
 
                 }
@@ -862,11 +952,25 @@ public class MusicFrame extends javax.swing.JFrame {
     private void setupSlider(Duration totalDuration) {
         int totalSeconds = (int) totalDuration.toSeconds();
         musicJslider.setMaximum(totalSeconds);
-//        musicJslider.addChangeListener(e -> {
-//            int value = musicJslider.getValue();
-//            Duration seekTime = Duration.seconds(value);
-//            mediaPlayer.seek(seekTime);
-//        });
+
+        musicJslider.addChangeListener(e -> {
+            if (userInteraction) {
+                int value = musicJslider.getValue();
+                Duration seekTime = Duration.seconds(value);
+                mediaPlayer.seek(seekTime);
+            }
+        });
+        musicJslider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                userInteraction = true;
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                userInteraction = false;
+            }
+        });
     }
 
     private void startTimer() {
@@ -887,6 +991,5 @@ public class MusicFrame extends javax.swing.JFrame {
     private void updateChanges(String timeStamp, int progress) {
         currentTime.setText(timeStamp);
         musicJslider.setValue(progress);
-        
     }
 }
