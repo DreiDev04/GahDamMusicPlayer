@@ -3,7 +3,6 @@ package gahdammusicplayerfinals;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.*;
 
 import javafx.embed.swing.JFXPanel;
@@ -18,33 +17,37 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MusicFrame extends javax.swing.JFrame {
 
-    ExtractInfo extractInfo;
-
+    private ExtractInfo extractInfo;
     private MediaPlayer mediaPlayer;
+
     private final JFXPanel fxPanel;
 
-    CardLayout cardLayout;
-    Cards cards;
-    int cardCount = 0;
-    StringBuilder currentMusic = new StringBuilder("");
-    int musicIndex;
+    private int cardCount = 0;
+//    private Cards cards;
+    private StringBuilder currentMusic = new StringBuilder("");
+    private int musicIndex;
 
-    ArrayList<String> musicArray = new ArrayList<String>();
+    private boolean isPlaying = false;
 
-    //for time stamp
-    DecimalFormat decimalFormat = new DecimalFormat("00");
+    private ArrayList<String> musicArray = new ArrayList<String>();
+    private ArrayList<JPanel> cardsPanel;
+
+// For time stamp
+    private DecimalFormat decimalFormat = new DecimalFormat("00");
     private Timer timer;
     private MouseEvent evt;
     private boolean userInteraction = false;
 
-    //mouse nav listener
+// Mouse nav listener
     private int dragStartX;
     private int dragStartY;
 
-    //resize listener
+// Resize listener
     private int previousWidth;
     private int previousHeight;
     private boolean isFullScreen;
@@ -75,12 +78,12 @@ public class MusicFrame extends javax.swing.JFrame {
         minimizeButton = new javax.swing.JLabel();
         settingCombo = new javax.swing.JComboBox<>();
         footerPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        infoController = new javax.swing.JPanel();
+        artworkContainer = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         songNameLabel = new javax.swing.JLabel();
         artistNameLabel = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        musicController = new javax.swing.JPanel();
         currentTime = new javax.swing.JLabel();
         stopButton1 = new javax.swing.JButton();
         prevButton = new javax.swing.JButton();
@@ -89,13 +92,15 @@ public class MusicFrame extends javax.swing.JFrame {
         repeatToggleButton = new javax.swing.JToggleButton();
         endTime = new javax.swing.JLabel();
         musicJslider = new javax.swing.JSlider();
-        jPanel2 = new javax.swing.JPanel();
+        volumeController = new javax.swing.JPanel();
         volumeSlider = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
         asidePanel = new javax.swing.JPanel();
         logoContainer = new javax.swing.JPanel();
+        logo_50x50 = new javax.swing.JLabel();
         gahDamMusicLaebl = new javax.swing.JLabel();
         logoContainer1 = new javax.swing.JPanel();
+        logo_25x25 = new javax.swing.JLabel();
         welcomeLogo = new javax.swing.JLabel();
         searchLabel = new javax.swing.JLabel();
         libraryLabel = new javax.swing.JLabel();
@@ -113,9 +118,9 @@ public class MusicFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GahDamBro");
+        setIconImages(null);
         setMinimumSize(new java.awt.Dimension(900, 570));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(900, 570));
 
         backgroundPanel.setBackground(new java.awt.Color(204, 204, 204));
         backgroundPanel.setLayout(new java.awt.BorderLayout());
@@ -173,8 +178,8 @@ public class MusicFrame extends javax.swing.JFrame {
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, northPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(settingCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 786, Short.MAX_VALUE)
+                .addComponent(settingCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 673, Short.MAX_VALUE)
                 .addComponent(minimizeButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resizeButton)
@@ -192,7 +197,7 @@ public class MusicFrame extends javax.swing.JFrame {
                     .addComponent(xButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, northPanelLayout.createSequentialGroup()
-                .addGap(0, 6, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(settingCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -201,12 +206,9 @@ public class MusicFrame extends javax.swing.JFrame {
         footerPanel.setBackground(new java.awt.Color(31, 31, 31));
         footerPanel.setPreferredSize(new java.awt.Dimension(900, 70));
 
-        jPanel3.setBackground(new java.awt.Color(31, 31, 31));
-        jPanel3.setPreferredSize(new java.awt.Dimension(250, 60));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/music icon1.jpg"))); // NOI18N
-        jLabel3.setPreferredSize(new java.awt.Dimension(50, 50));
-        jPanel3.add(jLabel3);
+        infoController.setBackground(new java.awt.Color(31, 31, 31));
+        infoController.setPreferredSize(new java.awt.Dimension(250, 60));
+        infoController.add(artworkContainer);
 
         jPanel4.setBackground(new java.awt.Color(31, 31, 31));
         jPanel4.setPreferredSize(new java.awt.Dimension(160, 50));
@@ -215,12 +217,10 @@ public class MusicFrame extends javax.swing.JFrame {
         songNameLabel.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
         songNameLabel.setForeground(new java.awt.Color(255, 255, 255));
         songNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        songNameLabel.setText("<Song Name>");
 
         artistNameLabel.setFont(new java.awt.Font("Dialog", 1, 8)); // NOI18N
         artistNameLabel.setForeground(new java.awt.Color(255, 255, 255));
         artistNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        artistNameLabel.setText("<Artis Name>");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -232,24 +232,24 @@ public class MusicFrame extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addComponent(songNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(artistNameLabel))
         );
 
-        jPanel3.add(jPanel4);
+        infoController.add(jPanel4);
 
-        footerPanel.add(jPanel3);
+        footerPanel.add(infoController);
 
-        jPanel1.setBackground(new java.awt.Color(31, 31, 31));
-        jPanel1.setPreferredSize(new java.awt.Dimension(300, 60));
-        jPanel1.setRequestFocusEnabled(false);
+        musicController.setBackground(new java.awt.Color(31, 31, 31));
+        musicController.setPreferredSize(new java.awt.Dimension(300, 60));
+        musicController.setRequestFocusEnabled(false);
 
         currentTime.setBackground(new java.awt.Color(255, 255, 255));
         currentTime.setForeground(new java.awt.Color(255, 255, 255));
         currentTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         currentTime.setText("00:00");
-        jPanel1.add(currentTime);
+        musicController.add(currentTime);
 
         stopButton1.setBackground(new java.awt.Color(31, 31, 31));
         stopButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/stop-button.png"))); // NOI18N
@@ -263,12 +263,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 stopButton1MouseClicked(evt);
             }
         });
-        stopButton1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                stopButton1KeyPressed(evt);
-            }
-        });
-        jPanel1.add(stopButton1);
+        musicController.add(stopButton1);
 
         prevButton.setBackground(new java.awt.Color(31, 31, 31));
         prevButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left-chevron.png"))); // NOI18N
@@ -282,10 +277,10 @@ public class MusicFrame extends javax.swing.JFrame {
                 prevButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(prevButton);
+        musicController.add(prevButton);
 
         playButton.setBackground(new java.awt.Color(31, 31, 31));
-        playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/play.png"))); // NOI18N
+        playButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/play-button.png"))); // NOI18N
         playButton.setBorder(null);
         playButton.setBorderPainted(false);
         playButton.setContentAreaFilled(false);
@@ -295,7 +290,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 playButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(playButton);
+        musicController.add(playButton);
 
         nextButton.setBackground(new java.awt.Color(31, 31, 31));
         nextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/right-chevron.png"))); // NOI18N
@@ -309,7 +304,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 nextButtonMouseClicked(evt);
             }
         });
-        jPanel1.add(nextButton);
+        musicController.add(nextButton);
 
         repeatToggleButton.setBackground(new java.awt.Color(31, 31, 31));
         repeatToggleButton.setForeground(new java.awt.Color(204, 204, 255));
@@ -319,12 +314,12 @@ public class MusicFrame extends javax.swing.JFrame {
         repeatToggleButton.setOpaque(false);
         repeatToggleButton.setPreferredSize(new java.awt.Dimension(28, 28));
         repeatToggleButton.setRequestFocusEnabled(false);
-        jPanel1.add(repeatToggleButton);
+        musicController.add(repeatToggleButton);
 
         endTime.setBackground(new java.awt.Color(255, 255, 255));
         endTime.setForeground(new java.awt.Color(255, 255, 255));
         endTime.setText("00:00");
-        jPanel1.add(endTime);
+        musicController.add(endTime);
 
         musicJslider.setPaintLabels(true);
         musicJslider.setPaintTicks(true);
@@ -332,40 +327,39 @@ public class MusicFrame extends javax.swing.JFrame {
         musicJslider.setMinimumSize(new java.awt.Dimension(280, 27));
         musicJslider.setOpaque(false);
         musicJslider.setPreferredSize(new java.awt.Dimension(280, 27));
-        jPanel1.add(musicJslider);
+        musicController.add(musicJslider);
 
-        footerPanel.add(jPanel1);
+        footerPanel.add(musicController);
 
-        jPanel2.setBackground(new java.awt.Color(31, 31, 31));
-        jPanel2.setPreferredSize(new java.awt.Dimension(300, 60));
+        volumeController.setBackground(new java.awt.Color(31, 31, 31));
+        volumeController.setPreferredSize(new java.awt.Dimension(300, 60));
 
         volumeSlider.setOpaque(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/volume-up.png"))); // NOI18N
-        jLabel1.setPreferredSize(new java.awt.Dimension(24, 24));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout volumeControllerLayout = new javax.swing.GroupLayout(volumeController);
+        volumeController.setLayout(volumeControllerLayout);
+        volumeControllerLayout.setHorizontalGroup(
+            volumeControllerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, volumeControllerLayout.createSequentialGroup()
                 .addContainerGap(147, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        volumeControllerLayout.setVerticalGroup(
+            volumeControllerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(volumeControllerLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(volumeControllerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(volumeSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
-        footerPanel.add(jPanel2);
+        footerPanel.add(volumeController);
 
         backgroundPanel.add(footerPanel, java.awt.BorderLayout.SOUTH);
 
@@ -377,15 +371,21 @@ public class MusicFrame extends javax.swing.JFrame {
         logoContainer.setBackground(new java.awt.Color(204, 0, 0));
         logoContainer.setPreferredSize(new java.awt.Dimension(50, 50));
 
+        logo_50x50.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/50x50 Logo Pink.jpg"))); // NOI18N
+
         javax.swing.GroupLayout logoContainerLayout = new javax.swing.GroupLayout(logoContainer);
         logoContainer.setLayout(logoContainerLayout);
         logoContainerLayout.setHorizontalGroup(
             logoContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(logoContainerLayout.createSequentialGroup()
+                .addComponent(logo_50x50)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         logoContainerLayout.setVerticalGroup(
             logoContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(logoContainerLayout.createSequentialGroup()
+                .addComponent(logo_50x50)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         gahDamMusicLaebl.setBackground(new java.awt.Color(204, 204, 204));
@@ -397,15 +397,19 @@ public class MusicFrame extends javax.swing.JFrame {
         logoContainer1.setBackground(new java.awt.Color(204, 0, 0));
         logoContainer1.setPreferredSize(new java.awt.Dimension(25, 25));
 
+        logo_25x25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/25x25 Logo Pink.jpg"))); // NOI18N
+
         javax.swing.GroupLayout logoContainer1Layout = new javax.swing.GroupLayout(logoContainer1);
         logoContainer1.setLayout(logoContainer1Layout);
         logoContainer1Layout.setHorizontalGroup(
             logoContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
+            .addGroup(logoContainer1Layout.createSequentialGroup()
+                .addComponent(logo_25x25, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         logoContainer1Layout.setVerticalGroup(
             logoContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
+            .addComponent(logo_25x25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         welcomeLogo.setForeground(new java.awt.Color(102, 255, 102));
@@ -446,10 +450,10 @@ public class MusicFrame extends javax.swing.JFrame {
                             .addGroup(asidePanelLayout.createSequentialGroup()
                                 .addComponent(logoContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(gahDamMusicLaebl, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(gahDamMusicLaebl, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
                             .addComponent(libraryLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(searchLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap())
         );
         asidePanelLayout.setVerticalGroup(
             asidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -527,9 +531,9 @@ public class MusicFrame extends javax.swing.JFrame {
                 searchTextFieldFocusLost(evt);
             }
         });
-        searchTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchTextFieldActionPerformed(evt);
+        searchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchTextFieldKeyReleased(evt);
             }
         });
         searchNav.add(searchTextField);
@@ -630,10 +634,6 @@ public class MusicFrame extends javax.swing.JFrame {
         mainPanel.revalidate();
     }//GEN-LAST:event_searchLabelMouseClicked
 
-    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-
-    }//GEN-LAST:event_searchTextFieldActionPerformed
-
     private void searchTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchTextFieldFocusGained
         if (searchTextField.getText().equals("Search")) {
             searchTextField.setText("");
@@ -650,7 +650,23 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_searchTextFieldFocusLost
 
     private void playButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playButtonMouseClicked
-        playMusic();
+        if (isPlaying) {
+            mediaPlayer.pause();
+            playButton.setIcon(new ImageIcon(getClass().getResource("/icons/play-button.png")));
+            if (timer != null) {
+                timer.cancel(); // Cancel the timer task to pause it
+            }
+        } else {
+            mediaPlayer.play();
+            playButton.setIcon(new ImageIcon(getClass().getResource("/icons/pause-button.png")));
+            if (timer != null) {
+                startTimer(); // Start or resume the timer
+            }
+        }
+
+        isPlaying = !isPlaying;
+
+
     }//GEN-LAST:event_playButtonMouseClicked
 
     private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
@@ -689,6 +705,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 mediaPlayer.seek(Duration.ZERO);
             } else {
                 nextButtonMouseClicked(evt);
+
             }
         });
         musicIndex++;
@@ -738,10 +755,6 @@ public class MusicFrame extends javax.swing.JFrame {
         songNameLabel.setText("<html>" + extractInfo.musicName[musicIndex] + "</html>");
     }//GEN-LAST:event_prevButtonMouseClicked
 
-    private void stopButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stopButton1KeyPressed
-        stopMusic();
-    }//GEN-LAST:event_stopButton1KeyPressed
-
     private void stopButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopButton1MouseClicked
         stopMusic();
     }//GEN-LAST:event_stopButton1MouseClicked
@@ -765,11 +778,53 @@ public class MusicFrame extends javax.swing.JFrame {
                 extractInfo.setDirectoryPath(selectedFile.getAbsolutePath() + "\\");
                 System.out.println(selectedFile);
                 addCards();
-                
+
             }
         }
-        
+
     }//GEN-LAST:event_settingComboActionPerformed
+
+    private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
+        boolean noMatch = true;
+        String searchValue = searchTextField.getText();
+
+        System.out.println("search: " + searchValue);
+
+        if (searchValue.isEmpty()) {
+            return;
+        } else {
+            String regexPattern = "\\b" + Pattern.quote(searchValue) + "\\b";
+            Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
+
+
+            for (String element : musicArray) {
+                Matcher matcher = pattern.matcher(element);
+
+                for (JPanel panel : cardsPanel) {
+                    String panelName = panel.getName();
+
+                    if (matcher.find()) {
+                        System.out.println("Match found in element: " + element);
+                        noMatch = false;
+
+                        System.out.println(panelName);
+
+                    }
+                }
+            }
+
+            if (noMatch) {
+                System.out.println("No Match Found");
+            }
+        }
+
+//        System.out.println(cardsPanel.get(0));
+//        for (JPanel panel : cardsPanel) {
+//            String panelName = panel.getName();
+//            System.out.println(panelName);
+//        }
+
+    }//GEN-LAST:event_searchTextFieldKeyReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -806,18 +861,16 @@ public class MusicFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel artistNameLabel;
+    private javax.swing.JLabel artworkContainer;
     private javax.swing.JPanel asidePanel;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JLabel currentTime;
     private javax.swing.JLabel endTime;
     private javax.swing.JPanel footerPanel;
     private javax.swing.JLabel gahDamMusicLaebl;
+    private javax.swing.JPanel infoController;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel libraryLabel;
     private javax.swing.JPanel libraryPanel;
@@ -825,9 +878,12 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane libraryscrollPanel1;
     private javax.swing.JPanel logoContainer;
     private javax.swing.JPanel logoContainer1;
+    private javax.swing.JLabel logo_25x25;
+    private javax.swing.JLabel logo_50x50;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel mainScrollPane2;
     private javax.swing.JLabel minimizeButton;
+    private javax.swing.JPanel musicController;
     private javax.swing.JSlider musicJslider;
     private javax.swing.JPanel navBarPanel;
     private javax.swing.JButton nextButton;
@@ -843,6 +899,7 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> settingCombo;
     private javax.swing.JLabel songNameLabel;
     private javax.swing.JButton stopButton1;
+    private javax.swing.JPanel volumeController;
     private javax.swing.JSlider volumeSlider;
     private javax.swing.JLabel welcomeLogo;
     private javax.swing.JLabel xButton;
@@ -854,30 +911,37 @@ public class MusicFrame extends javax.swing.JFrame {
         libraryscrollPanel.setBorder(null);
         libraryscrollPanel1.setBorder(null);
         libraryscrollPanel.getVerticalScrollBar().setUnitIncrement(10);
-        
-        settingCombo.setUI(new CustomComboBoxUI());
+
+    }
+
+    private void searchCards() {
 
     }
 
     private void addCards() {
         System.out.println(extractInfo.directoryPath);
+        cardsPanel = new ArrayList<>();
 
         extractInfo = new ExtractInfo();
         for (int i = 0; i < extractInfo.fileCount; i++) {
             final int index = i;
+
             Cards cards = new Cards();
-            //html tag for autowrap
+
             cards.artistName.setText("<html>" + extractInfo.artistName[i] + "</html>");
             cards.songName.setText("<html>" + extractInfo.musicName[i] + "</html>");
 
+//            cards.setName(extractInfo.musicName[i]);
             musicArray.add(extractInfo.files[i].getName());
 
-            cards.musicArtwork.addMouseListener(new MouseListener() {
-
+            cards.musicArtwork.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
                     artistNameLabel.setText("<html>" + extractInfo.artistName[index] + "</html>");
                     songNameLabel.setText("<html>" + extractInfo.musicName[index] + "</html>");
+
+                    artworkContainer.setIcon(new ImageIcon(getClass().getResource("/icons/music icon1.jpg")));
+
                     musicIndex = index;
                     currentMusic.setLength(0);
                     currentMusic.append(musicArray.get(index));
@@ -895,6 +959,7 @@ public class MusicFrame extends javax.swing.JFrame {
                         String formattedDuration = decimalFormat.format(minutes) + ":" + decimalFormat.format(seconds);
                         endTime.setText(formattedDuration);
                         setupSlider(duration);
+
                         startTimer();
                     });
 
@@ -903,48 +968,30 @@ public class MusicFrame extends javax.swing.JFrame {
                     playMusic();
 
                     mediaPlayer.setOnEndOfMedia(() -> {
+
                         if (repeatToggleButton.isSelected()) {
                             System.out.println("Toggle Button Enabled");
                             mediaPlayer.seek(Duration.ZERO);
+
                         } else {
                             nextButtonMouseClicked(evt);
+
                         }
                     });
                     System.out.println("Playing: " + musicArray.get(index));
-
-                }
-
-                @Override
-                public void mousePressed(MouseEvent me) {
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent me) {
-
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent me) {
-
-                }
-
-                @Override
-                public void mouseExited(MouseEvent me) {
-
                 }
             });
 
+            cardsPanel.add(cards);
+            cardsPanel.get(i).setName(extractInfo.musicName[i]);
             libraryPanel.add(cards);
 
             cardCount++;
-            //for spacing
             if (cardCount % 4 == 0) {
                 Dimension currentPreferredSize = libraryPanel.getPreferredSize();
                 libraryPanel.setPreferredSize(new Dimension(currentPreferredSize.width, currentPreferredSize.height + 200));
                 libraryPanel.revalidate();
             }
-
         }
 
         libraryscrollPanel.revalidate();
@@ -953,6 +1000,8 @@ public class MusicFrame extends javax.swing.JFrame {
 
     private void musicInit() {
         volumeSlider.addChangeListener(e -> setVolumeMusic(volumeSlider.getValue() / 100.0));
+        ImageIcon image = new ImageIcon("src/icons/MainLogoPink.jpg");
+        this.setIconImage(image.getImage());
 
     }
 
@@ -971,16 +1020,15 @@ public class MusicFrame extends javax.swing.JFrame {
     private void playMusic() {
         if (mediaPlayer.getStatus() == Status.PAUSED) {
             mediaPlayer.play();
+
         } else {
             mediaPlayer.stop();
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.play();
-
+            isPlaying = true;
+            playButton.setIcon(new ImageIcon(getClass().getResource("/icons/pause-button.png")));
         }
-    }
 
-    private void pauseMusic() {
-        mediaPlayer.pause();
     }
 
     private void stopMusic() {
@@ -1017,7 +1065,12 @@ public class MusicFrame extends javax.swing.JFrame {
     }
 
     private void startTimer() {
+        if (timer != null) {
+            timer.cancel(); //dispose the other timer on the backgrond
+        }
+
         timer = new Timer();
+
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -1026,9 +1079,11 @@ public class MusicFrame extends javax.swing.JFrame {
                 long minutes = currentSeconds / 60;
                 long seconds = currentSeconds % 60;
                 String formattedTimestamp = String.format("%02d:%02d", minutes, seconds);
+                System.out.println("Timer: " + formattedTimestamp);
                 SwingUtilities.invokeLater(() -> updateChanges(formattedTimestamp, (int) currentSeconds));
             }
         }, 0, 1000);
+
     }
 
     private void updateChanges(String timeStamp, int progress) {

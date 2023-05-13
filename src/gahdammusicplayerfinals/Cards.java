@@ -4,7 +4,7 @@ public class Cards extends javax.swing.JPanel {
 
     static ExtractInfo extractInfo;
     static MusicFrame musicFrame;
-    
+        
     static public String currentMusic;
     public Cards() {
 
