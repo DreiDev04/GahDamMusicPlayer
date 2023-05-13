@@ -21,7 +21,7 @@ import java.util.TimerTask;
 
 public class MusicFrame extends javax.swing.JFrame {
 
-    ExtractInfo extractInfo = new ExtractInfo();
+    ExtractInfo extractInfo;
 
     private MediaPlayer mediaPlayer;
     private final JFXPanel fxPanel;
@@ -60,8 +60,6 @@ public class MusicFrame extends javax.swing.JFrame {
             initFX(fxPanel);
 
         });
-
-        addCards();
 
         musicInit();
     }
@@ -156,21 +154,27 @@ public class MusicFrame extends javax.swing.JFrame {
             }
         });
 
-        settingCombo.setBackground(new java.awt.Color(204, 204, 204));
-        settingCombo.setFont(new java.awt.Font("Leelawadee", 1, 12)); // NOI18N
-        settingCombo.setForeground(new java.awt.Color(255, 255, 255));
-        settingCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----", "Directory", "Add File" }));
+        settingCombo.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        settingCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-----", "Directory" }));
         settingCombo.setToolTipText("");
         settingCombo.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         settingCombo.setFocusable(false);
+        settingCombo.setOpaque(false);
+        settingCombo.setRequestFocusEnabled(false);
+        settingCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingComboActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout northPanelLayout = new javax.swing.GroupLayout(northPanel);
         northPanel.setLayout(northPanelLayout);
         northPanelLayout.setHorizontalGroup(
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, northPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(settingCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 790, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 786, Short.MAX_VALUE)
                 .addComponent(minimizeButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resizeButton)
@@ -187,9 +191,9 @@ public class MusicFrame extends javax.swing.JFrame {
                     .addComponent(resizeButton)
                     .addComponent(xButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(northPanelLayout.createSequentialGroup()
-                .addComponent(settingCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, northPanelLayout.createSequentialGroup()
+                .addGap(0, 6, Short.MAX_VALUE)
+                .addComponent(settingCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         backgroundPanel.add(northPanel, java.awt.BorderLayout.NORTH);
@@ -370,6 +374,7 @@ public class MusicFrame extends javax.swing.JFrame {
         asidePanel.setMinimumSize(new java.awt.Dimension(200, 460));
         asidePanel.setPreferredSize(new java.awt.Dimension(200, 460));
 
+        logoContainer.setBackground(new java.awt.Color(204, 0, 0));
         logoContainer.setPreferredSize(new java.awt.Dimension(50, 50));
 
         javax.swing.GroupLayout logoContainerLayout = new javax.swing.GroupLayout(logoContainer);
@@ -389,6 +394,7 @@ public class MusicFrame extends javax.swing.JFrame {
         gahDamMusicLaebl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         gahDamMusicLaebl.setText("GahDamMusic");
 
+        logoContainer1.setBackground(new java.awt.Color(204, 0, 0));
         logoContainer1.setPreferredSize(new java.awt.Dimension(25, 25));
 
         javax.swing.GroupLayout logoContainer1Layout = new javax.swing.GroupLayout(logoContainer1);
@@ -648,9 +654,11 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_playButtonMouseClicked
 
     private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
+
         musicJslider.setValue(0);
         currentMusic.setLength(0);
         currentMusic.append(musicArray.get(musicIndex + 1));
+
         System.out.println("Playing: " + musicArray.get(musicIndex + 1));
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -684,14 +692,17 @@ public class MusicFrame extends javax.swing.JFrame {
             }
         });
         musicIndex++;
-
+        artistNameLabel.setText("<html>" + extractInfo.artistName[musicIndex] + "</html>");
+        songNameLabel.setText("<html>" + extractInfo.musicName[musicIndex] + "</html>");
     }//GEN-LAST:event_nextButtonMouseClicked
 
     private void prevButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prevButtonMouseClicked
+
         musicJslider.setValue(0);
         currentMusic.setLength(0);
         currentMusic.append(musicArray.get(musicIndex - 1));
         System.out.println("Playing: " + musicArray.get(musicIndex - 1));
+
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
@@ -723,6 +734,8 @@ public class MusicFrame extends javax.swing.JFrame {
             }
         });
         musicIndex--;
+        artistNameLabel.setText("<html>" + extractInfo.artistName[musicIndex] + "</html>");
+        songNameLabel.setText("<html>" + extractInfo.musicName[musicIndex] + "</html>");
     }//GEN-LAST:event_prevButtonMouseClicked
 
     private void stopButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stopButton1KeyPressed
@@ -732,6 +745,31 @@ public class MusicFrame extends javax.swing.JFrame {
     private void stopButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stopButton1MouseClicked
         stopMusic();
     }//GEN-LAST:event_stopButton1MouseClicked
+
+    private void settingComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingComboActionPerformed
+
+        JComboBox<String> comboBox = (JComboBox<String>) evt.getSource();
+        String selectedItem = (String) comboBox.getSelectedItem();
+
+        if ("Directory".equals(selectedItem)) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            int result = fileChooser.showOpenDialog(MusicFrame.this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                libraryPanel.removeAll();
+                musicArray.clear();
+                libraryPanel.revalidate();
+                libraryPanel.repaint();
+                File selectedFile = fileChooser.getSelectedFile();
+                extractInfo.setDirectoryPath(selectedFile.getAbsolutePath() + "\\");
+                System.out.println(selectedFile);
+                addCards();
+                
+            }
+        }
+        
+    }//GEN-LAST:event_settingComboActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -816,11 +854,15 @@ public class MusicFrame extends javax.swing.JFrame {
         libraryscrollPanel.setBorder(null);
         libraryscrollPanel1.setBorder(null);
         libraryscrollPanel.getVerticalScrollBar().setUnitIncrement(10);
+        
+        settingCombo.setUI(new CustomComboBoxUI());
 
     }
 
     private void addCards() {
+        System.out.println(extractInfo.directoryPath);
 
+        extractInfo = new ExtractInfo();
         for (int i = 0; i < extractInfo.fileCount; i++) {
             final int index = i;
             Cards cards = new Cards();
@@ -892,6 +934,7 @@ public class MusicFrame extends javax.swing.JFrame {
 
                 }
             });
+
             libraryPanel.add(cards);
 
             cardCount++;
