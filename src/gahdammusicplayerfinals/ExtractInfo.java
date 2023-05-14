@@ -12,7 +12,7 @@ public class ExtractInfo {
     public static int fileCount;
 
     static {
-        directoryPath = "C:\\Users\\tacuj\\Documents\\NetBeansProjects\\GahDamMusicPlayerFinals\\src\\musicFolder";
+        directoryPath = "C:\\";
         directory = new File(directoryPath);
         files = directory.listFiles();
         fileNames = new String[files.length];

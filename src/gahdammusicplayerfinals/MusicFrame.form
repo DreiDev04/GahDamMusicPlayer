@@ -8,7 +8,7 @@
       <ComponentRef name="null"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[900, 570]"/>
+      <Dimension value="[900, 600]"/>
     </Property>
     <Property name="undecorated" type="boolean" value="true"/>
   </Properties>
@@ -424,7 +424,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace pref="147" max="32767" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="volumeLogo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="volumeSlider" min="-2" pref="117" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -436,7 +436,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel1" max="32767" attributes="0"/>
+                              <Component id="volumeLogo" max="32767" attributes="0"/>
                               <Component id="volumeSlider" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace pref="15" max="32767" attributes="0"/>
@@ -450,7 +450,7 @@
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel1">
+                <Component class="javax.swing.JLabel" name="volumeLogo">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/volume-up.png"/>
@@ -727,7 +727,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JScrollPane" name="libraryscrollPanel">
+                <Container class="javax.swing.JScrollPane" name="libraryscroll">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="1f" green="1f" red="1f" type="rgb"/>
@@ -737,6 +737,10 @@
                     </Property>
                     <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="verticalScrollBarPolicy" type="int" value="22"/>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[700, 410]"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[700, 410]"/>
                     </Property>
@@ -749,7 +753,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Container class="javax.swing.JPanel" name="libraryPanel">
+                    <Container class="javax.swing.JPanel" name="libraryScrollPanel">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="20" green="20" red="20" type="rgb"/>
@@ -833,7 +837,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JScrollPane" name="libraryscrollPanel1">
+                <Container class="javax.swing.JScrollPane" name="searchScroll">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="1f" green="1f" red="1f" type="rgb"/>
@@ -843,8 +847,12 @@
                     </Property>
                     <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
+                    <Property name="verticalScrollBarPolicy" type="int" value="22"/>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[700, 410]"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[700, 420]"/>
+                      <Dimension value="[700, 410]"/>
                     </Property>
                   </Properties>
                   <Constraints>
@@ -855,16 +863,19 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Container class="javax.swing.JPanel" name="mainScrollPane2">
+                    <Container class="javax.swing.JPanel" name="searchScrollPanel">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="20" green="20" red="20" type="rgb"/>
                         </Property>
+                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[700, 9999]"/>
+                        </Property>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[700, 410]"/>
+                          <Dimension value="[700, 420]"/>
                         </Property>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[700, 400]"/>
+                          <Dimension value="[700, 420]"/>
                         </Property>
                       </Properties>
 

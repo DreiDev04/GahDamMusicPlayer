@@ -22,32 +22,33 @@ import java.util.regex.Pattern;
 
 public class MusicFrame extends javax.swing.JFrame {
 
+    //import Other Files
     private ExtractInfo extractInfo;
     private MediaPlayer mediaPlayer;
-
+    //import JavaFX
     private final JFXPanel fxPanel;
 
-    private int cardCount = 0;
-//    private Cards cards;
-    private StringBuilder currentMusic = new StringBuilder("");
-    private int musicIndex;
+    private int cardCount = 0; //to deterine the how many cards in scroll panel
+    private StringBuilder currentMusic = new StringBuilder(""); //SB for dynamic String
+    private int musicIndex; // to deterimne the index
 
     private boolean isPlaying = false;
 
+    //For Storing Cards Panel and Info
     private ArrayList<String> musicArray = new ArrayList<String>();
     private ArrayList<JPanel> cardsPanel;
 
-// For time stamp
+    // For time stamp
     private DecimalFormat decimalFormat = new DecimalFormat("00");
     private Timer timer;
     private MouseEvent evt;
     private boolean userInteraction = false;
 
-// Mouse nav listener
+    // Mouse nav listener
     private int dragStartX;
     private int dragStartY;
 
-// Resize listener
+    // Resize listener
     private int previousWidth;
     private int previousHeight;
     private boolean isFullScreen;
@@ -94,7 +95,7 @@ public class MusicFrame extends javax.swing.JFrame {
         musicJslider = new javax.swing.JSlider();
         volumeController = new javax.swing.JPanel();
         volumeSlider = new javax.swing.JSlider();
-        jLabel1 = new javax.swing.JLabel();
+        volumeLogo = new javax.swing.JLabel();
         asidePanel = new javax.swing.JPanel();
         logoContainer = new javax.swing.JPanel();
         logo_50x50 = new javax.swing.JLabel();
@@ -108,18 +109,18 @@ public class MusicFrame extends javax.swing.JFrame {
         yourLibraryPanel = new javax.swing.JPanel();
         navBarPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        libraryscrollPanel = new javax.swing.JScrollPane();
-        libraryPanel = new javax.swing.JPanel();
+        libraryscroll = new javax.swing.JScrollPane();
+        libraryScrollPanel = new javax.swing.JPanel();
         searchPanel = new javax.swing.JPanel();
         searchNav = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
-        libraryscrollPanel1 = new javax.swing.JScrollPane();
-        mainScrollPane2 = new javax.swing.JPanel();
+        searchScroll = new javax.swing.JScrollPane();
+        searchScrollPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GahDamBro");
         setIconImages(null);
-        setMinimumSize(new java.awt.Dimension(900, 570));
+        setMinimumSize(new java.awt.Dimension(900, 600));
         setUndecorated(true);
 
         backgroundPanel.setBackground(new java.awt.Color(204, 204, 204));
@@ -336,7 +337,7 @@ public class MusicFrame extends javax.swing.JFrame {
 
         volumeSlider.setOpaque(false);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/volume-up.png"))); // NOI18N
+        volumeLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/volume-up.png"))); // NOI18N
 
         javax.swing.GroupLayout volumeControllerLayout = new javax.swing.GroupLayout(volumeController);
         volumeController.setLayout(volumeControllerLayout);
@@ -344,7 +345,7 @@ public class MusicFrame extends javax.swing.JFrame {
             volumeControllerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, volumeControllerLayout.createSequentialGroup()
                 .addContainerGap(147, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(volumeLogo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(volumeSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -354,7 +355,7 @@ public class MusicFrame extends javax.swing.JFrame {
             .addGroup(volumeControllerLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(volumeControllerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(volumeLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(volumeSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -495,18 +496,20 @@ public class MusicFrame extends javax.swing.JFrame {
 
         yourLibraryPanel.add(navBarPanel, java.awt.BorderLayout.NORTH);
 
-        libraryscrollPanel.setBackground(new java.awt.Color(31, 31, 31));
-        libraryscrollPanel.setForeground(new java.awt.Color(31, 31, 31));
-        libraryscrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        libraryscrollPanel.setToolTipText("");
-        libraryscrollPanel.setPreferredSize(new java.awt.Dimension(700, 410));
+        libraryscroll.setBackground(new java.awt.Color(31, 31, 31));
+        libraryscroll.setForeground(new java.awt.Color(31, 31, 31));
+        libraryscroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        libraryscroll.setToolTipText("");
+        libraryscroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        libraryscroll.setMinimumSize(new java.awt.Dimension(700, 410));
+        libraryscroll.setPreferredSize(new java.awt.Dimension(700, 410));
 
-        libraryPanel.setBackground(new java.awt.Color(32, 32, 32));
-        libraryPanel.setMinimumSize(new java.awt.Dimension(700, 410));
-        libraryPanel.setPreferredSize(new java.awt.Dimension(700, 410));
-        libraryscrollPanel.setViewportView(libraryPanel);
+        libraryScrollPanel.setBackground(new java.awt.Color(32, 32, 32));
+        libraryScrollPanel.setMinimumSize(new java.awt.Dimension(700, 410));
+        libraryScrollPanel.setPreferredSize(new java.awt.Dimension(700, 410));
+        libraryscroll.setViewportView(libraryScrollPanel);
 
-        yourLibraryPanel.add(libraryscrollPanel, java.awt.BorderLayout.CENTER);
+        yourLibraryPanel.add(libraryscroll, java.awt.BorderLayout.CENTER);
 
         mainPanel.add(yourLibraryPanel, "firstCard");
 
@@ -541,18 +544,21 @@ public class MusicFrame extends javax.swing.JFrame {
 
         searchPanel.add(searchNav, java.awt.BorderLayout.NORTH);
 
-        libraryscrollPanel1.setBackground(new java.awt.Color(31, 31, 31));
-        libraryscrollPanel1.setForeground(new java.awt.Color(31, 31, 31));
-        libraryscrollPanel1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        libraryscrollPanel1.setToolTipText("");
-        libraryscrollPanel1.setPreferredSize(new java.awt.Dimension(700, 420));
+        searchScroll.setBackground(new java.awt.Color(31, 31, 31));
+        searchScroll.setForeground(new java.awt.Color(31, 31, 31));
+        searchScroll.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        searchScroll.setToolTipText("");
+        searchScroll.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        searchScroll.setMinimumSize(new java.awt.Dimension(700, 410));
+        searchScroll.setPreferredSize(new java.awt.Dimension(700, 410));
 
-        mainScrollPane2.setBackground(new java.awt.Color(32, 32, 32));
-        mainScrollPane2.setMinimumSize(new java.awt.Dimension(700, 410));
-        mainScrollPane2.setPreferredSize(new java.awt.Dimension(700, 400));
-        libraryscrollPanel1.setViewportView(mainScrollPane2);
+        searchScrollPanel.setBackground(new java.awt.Color(32, 32, 32));
+        searchScrollPanel.setMaximumSize(new java.awt.Dimension(700, 9999));
+        searchScrollPanel.setMinimumSize(new java.awt.Dimension(700, 420));
+        searchScrollPanel.setPreferredSize(new java.awt.Dimension(700, 420));
+        searchScroll.setViewportView(searchScrollPanel);
 
-        searchPanel.add(libraryscrollPanel1, java.awt.BorderLayout.CENTER);
+        searchPanel.add(searchScroll, java.awt.BorderLayout.CENTER);
 
         mainPanel.add(searchPanel, "secondCard");
 
@@ -621,10 +627,15 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_resizeButtonMouseClicked
 
     private void libraryLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_libraryLabelMouseClicked
+
         mainPanel.removeAll();
         mainPanel.add(yourLibraryPanel);
         mainPanel.repaint();
         mainPanel.revalidate();
+        System.out.println("repaint");
+
+        addCards(false); // false, for us to set the dimension properly
+
     }//GEN-LAST:event_libraryLabelMouseClicked
 
     private void searchLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchLabelMouseClicked
@@ -670,12 +681,12 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_playButtonMouseClicked
 
     private void nextButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextButtonMouseClicked
-
         musicJslider.setValue(0);
         currentMusic.setLength(0);
         currentMusic.append(musicArray.get(musicIndex + 1));
 
         System.out.println("Playing: " + musicArray.get(musicIndex + 1));
+
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
@@ -691,12 +702,10 @@ public class MusicFrame extends javax.swing.JFrame {
 
             setupSlider(duration);
             startTimer();
-
         });
 
         setVolumeMusic(50);
         volumeSlider.setValue(50);
-
         playMusic();
 
         mediaPlayer.setOnEndOfMedia(() -> {
@@ -705,16 +714,15 @@ public class MusicFrame extends javax.swing.JFrame {
                 mediaPlayer.seek(Duration.ZERO);
             } else {
                 nextButtonMouseClicked(evt);
-
             }
         });
+
         musicIndex++;
         artistNameLabel.setText("<html>" + extractInfo.artistName[musicIndex] + "</html>");
         songNameLabel.setText("<html>" + extractInfo.musicName[musicIndex] + "</html>");
     }//GEN-LAST:event_nextButtonMouseClicked
 
     private void prevButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prevButtonMouseClicked
-
         musicJslider.setValue(0);
         currentMusic.setLength(0);
         currentMusic.append(musicArray.get(musicIndex - 1));
@@ -750,6 +758,7 @@ public class MusicFrame extends javax.swing.JFrame {
                 nextButtonMouseClicked(evt);
             }
         });
+
         musicIndex--;
         artistNameLabel.setText("<html>" + extractInfo.artistName[musicIndex] + "</html>");
         songNameLabel.setText("<html>" + extractInfo.musicName[musicIndex] + "</html>");
@@ -770,14 +779,14 @@ public class MusicFrame extends javax.swing.JFrame {
 
             int result = fileChooser.showOpenDialog(MusicFrame.this);
             if (result == JFileChooser.APPROVE_OPTION) {
-                libraryPanel.removeAll();
+                libraryScrollPanel.removeAll();
                 musicArray.clear();
-                libraryPanel.revalidate();
-                libraryPanel.repaint();
+                libraryScrollPanel.revalidate();
+                libraryScrollPanel.repaint();
                 File selectedFile = fileChooser.getSelectedFile();
                 extractInfo.setDirectoryPath(selectedFile.getAbsolutePath() + "\\");
                 System.out.println(selectedFile);
-                addCards();
+                addCards(true);
 
             }
         }
@@ -785,45 +794,49 @@ public class MusicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_settingComboActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        boolean noMatch = true;
-        String searchValue = searchTextField.getText();
 
+        searchScrollPanel.removeAll();
+        boolean noMatch = true;
+        int searchCards = 0;
+
+        String searchValue = searchTextField.getText();
         System.out.println("search: " + searchValue);
 
         if (searchValue.isEmpty()) {
             return;
-        } else {
-            String regexPattern = "\\b" + Pattern.quote(searchValue) + "\\b";
-            Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
+        }
 
+        String regexPattern = "\\b" + Pattern.quote(searchValue) + "\\b";
+        Pattern pattern = Pattern.compile(regexPattern, Pattern.CASE_INSENSITIVE);
+        boolean panelExists = false;
 
-            for (String element : musicArray) {
-                Matcher matcher = pattern.matcher(element);
+        for (JPanel panel : cardsPanel) {
+            String panelName = panel.getName();
+            Matcher matcher = pattern.matcher(panelName);
 
-                for (JPanel panel : cardsPanel) {
-                    String panelName = panel.getName();
-
-                    if (matcher.find()) {
-                        System.out.println("Match found in element: " + element);
-                        noMatch = false;
-
-                        System.out.println(panelName);
-
-                    }
-                }
+            if (matcher.find()) {
+                System.out.println("Match found in element: " + panelName);
+                panelExists = true;
+                searchScrollPanel.add(panel);
             }
 
-            if (noMatch) {
-                System.out.println("No Match Found");
+            searchCards++;
+            if (searchCards % 4 == 0) {
+                Dimension currentPreferredSize = searchScrollPanel.getPreferredSize();
+                searchScrollPanel.setPreferredSize(new Dimension(currentPreferredSize.width, currentPreferredSize.height + 200));
+                searchScrollPanel.revalidate();
             }
         }
 
-//        System.out.println(cardsPanel.get(0));
-//        for (JPanel panel : cardsPanel) {
-//            String panelName = panel.getName();
-//            System.out.println(panelName);
-//        }
+        searchScroll.revalidate();
+        searchScroll.repaint();
 
+        if (!panelExists) {
+            System.out.println("No Match Found");
+            noMatch = true;
+        } else {
+            noMatch = false;
+        }
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
     public static void main(String args[]) {
@@ -869,19 +882,16 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JPanel footerPanel;
     private javax.swing.JLabel gahDamMusicLaebl;
     private javax.swing.JPanel infoController;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel libraryLabel;
-    private javax.swing.JPanel libraryPanel;
-    private javax.swing.JScrollPane libraryscrollPanel;
-    private javax.swing.JScrollPane libraryscrollPanel1;
+    private javax.swing.JPanel libraryScrollPanel;
+    private javax.swing.JScrollPane libraryscroll;
     private javax.swing.JPanel logoContainer;
     private javax.swing.JPanel logoContainer1;
     private javax.swing.JLabel logo_25x25;
     private javax.swing.JLabel logo_50x50;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JPanel mainScrollPane2;
     private javax.swing.JLabel minimizeButton;
     private javax.swing.JPanel musicController;
     private javax.swing.JSlider musicJslider;
@@ -895,11 +905,14 @@ public class MusicFrame extends javax.swing.JFrame {
     private javax.swing.JLabel searchLabel;
     private javax.swing.JPanel searchNav;
     private javax.swing.JPanel searchPanel;
+    private javax.swing.JScrollPane searchScroll;
+    private javax.swing.JPanel searchScrollPanel;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> settingCombo;
     private javax.swing.JLabel songNameLabel;
     private javax.swing.JButton stopButton1;
     private javax.swing.JPanel volumeController;
+    private javax.swing.JLabel volumeLogo;
     private javax.swing.JSlider volumeSlider;
     private javax.swing.JLabel welcomeLogo;
     private javax.swing.JLabel xButton;
@@ -908,17 +921,16 @@ public class MusicFrame extends javax.swing.JFrame {
 
     private void init() {
 
-        libraryscrollPanel.setBorder(null);
-        libraryscrollPanel1.setBorder(null);
-        libraryscrollPanel.getVerticalScrollBar().setUnitIncrement(10);
+        libraryscroll.setBorder(null);
+        searchScroll.setBorder(null);
+        libraryscroll.getVerticalScrollBar().setUnitIncrement(10);
+        searchScroll.getVerticalScrollBar().setUnitIncrement(10);
 
     }
 
-    private void searchCards() {
+    private void addCards(boolean isDimensionAdded) {
 
-    }
-
-    private void addCards() {
+        libraryScrollPanel.removeAll();
         System.out.println(extractInfo.directoryPath);
         cardsPanel = new ArrayList<>();
 
@@ -931,7 +943,6 @@ public class MusicFrame extends javax.swing.JFrame {
             cards.artistName.setText("<html>" + extractInfo.artistName[i] + "</html>");
             cards.songName.setText("<html>" + extractInfo.musicName[i] + "</html>");
 
-//            cards.setName(extractInfo.musicName[i]);
             musicArray.add(extractInfo.files[i].getName());
 
             cards.musicArtwork.addMouseListener(new MouseAdapter() {
@@ -984,22 +995,24 @@ public class MusicFrame extends javax.swing.JFrame {
 
             cardsPanel.add(cards);
             cardsPanel.get(i).setName(extractInfo.musicName[i]);
-            libraryPanel.add(cards);
+            libraryScrollPanel.add(cards);
 
             cardCount++;
-            if (cardCount % 4 == 0) {
-                Dimension currentPreferredSize = libraryPanel.getPreferredSize();
-                libraryPanel.setPreferredSize(new Dimension(currentPreferredSize.width, currentPreferredSize.height + 200));
-                libraryPanel.revalidate();
+            if (cardCount % 4 == 0 && isDimensionAdded) {
+                Dimension currentPreferredSize = libraryScrollPanel.getPreferredSize();
+                libraryScrollPanel.setPreferredSize(new Dimension(currentPreferredSize.width, currentPreferredSize.height + 200));
+                libraryScrollPanel.revalidate();
             }
         }
 
-        libraryscrollPanel.revalidate();
-        libraryscrollPanel.repaint();
+        libraryscroll.revalidate();
+        libraryscroll.repaint();
     }
 
     private void musicInit() {
-        volumeSlider.addChangeListener(e -> setVolumeMusic(volumeSlider.getValue() / 100.0));
+        volumeSlider.addChangeListener(e
+                -> setVolumeMusic(volumeSlider.getValue() / 100.0)
+        );
         ImageIcon image = new ImageIcon("src/icons/MainLogoPink.jpg");
         this.setIconImage(image.getImage());
 
@@ -1090,4 +1103,5 @@ public class MusicFrame extends javax.swing.JFrame {
         currentTime.setText(timeStamp);
         musicJslider.setValue(progress);
     }
+
 }
