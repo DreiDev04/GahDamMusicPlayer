@@ -920,7 +920,6 @@ public class MusicFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void init() {
-
         libraryscroll.setBorder(null);
         searchScroll.setBorder(null);
         libraryscroll.getVerticalScrollBar().setUnitIncrement(10);
