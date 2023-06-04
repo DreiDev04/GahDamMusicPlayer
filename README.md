@@ -35,29 +35,29 @@ Search: Allows you to search in the current music folder
 
 ## Contributors
 
-Tacujan, John Andrei R. 
-Abayan, Laura F. 
-Cordero, Margaret Kate T. 
-Mandap, Nathaniel S. 
-Salta, Dominic G. 
-Simbol, Jose Patrick D. 
-Tanig, Janina Claire C. 
+#### Tacujan, John Andrei R. 
+#### Abayan, Laura F. 
+#### Cordero, Margaret Kate T. 
+#### Mandap, Nathaniel S. 
+#### Salta, Dominic G. 
+#### Simbol, Jose Patrick D. 
+#### Tanig, Janina Claire C. 
 
 
 ## Screenshots
 
 ### Idle screen when you run the program
-
+![IdleScreen](https://github.com/DreiDev04/GahDamMusicPlayer/blob/main/screenshots/IdleScreen.png)
 
 
 ### Opening Directory path to let the program know where to get its music from.
-
+![OpeningDirectory](https://github.com/DreiDev04/GahDamMusicPlayer/blob/main/screenshots/OpeningDirectory.png)
 
 
 ### The library shows songs from folder through cards.
-
+![ShowingLibrary](https://github.com/DreiDev04/GahDamMusicPlayer/blob/main/screenshots/ShowingLibrary.png)
 
 
 ### The UI above when music plays.
-
+![MusicPlaying](https://github.com/DreiDev04/GahDamMusicPlayer/blob/main/screenshots/MusicPlaying.png)
 
