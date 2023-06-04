@@ -3,7 +3,7 @@ package gahdammusicplayerfinals;
 import java.io.File;
 
 public class ExtractInfo {
-    public static String directoryPath;
+    public static String directoryPath = "C:\\";
     public static File directory;
     public static File[] files;
     public static String[] fileNames;
